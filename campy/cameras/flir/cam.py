@@ -273,7 +273,8 @@ def ConfigureCustomImageSettings(cam_params,nodemap):
         else:
             print('Height not available...')
             
-            
+        
+        #set     
         
 
     except PySpin.SpinnakerException as ex:
