@@ -42,7 +42,7 @@ def OpenWriter(cam_params):
 					'-bufsize', '20M',
 					'-maxrate', '10M',
 					'-bf:v', '4',
-					'-vsync', '0',]
+					'-vsync', '0',] # before was 0, which would keep timestamps, but -r:v ignores timestamps again ... alternative not -r bur -framrate and here 0 ?? (we probably do not want 1 or 2 since it might result in frame drops or duplications)
 
 	# GPU compression
 	else:
@@ -56,7 +56,7 @@ def OpenWriter(cam_params):
 						'-preset', 'fast', # set to 'fast', 'llhp', or 'llhq' for h264 or hevc
 						'-qp', cam_params["quality"],
 						'-bf:v', '0',
-						'-vsync', '0',
+						'-vsync', '0', 
 						'-2pass', '0',
 						'-gpu', str(cam_params["gpuID"]),]
 		elif cam_params["gpuMake"] == 'amd':

@@ -1,21 +1,21 @@
 # Recording parameters
-videoFolder: "D:/test"
+videoFolder: "D:\\test"
 videoFilename: "0.mp4"
-frameRate: 100
-recTimeInSec: 10
+frameRate: 60
+recTimeInSec: 2
 
 # Camera parameters
 cameraMake: "flir"
 numCams: 1
 cameraSelection: [0]
-cameraSettings: "./campy/cameras/basler/settings/acA1920-150uc_1152x1024p_100fps_trigger_RGB_p6.pfs"
+cameraSettings: "D:/git_repos/campy/campy/cameras/flir/settings/BFS-U3-19S4_1616x1240_60fps_no_trigger_RGB_p6.pfs"
 cameraNames: ['Camera1']
 
 # Compression parameters
 ffmpegLogLevel: ["warning"]
 gpuID: -1
-pixelFormatInput: "rgb24" # 'bayer_bggr8' 'rgb24'
-pixelFormatOutput: "rgb0"
+pixelFormatInput: "gray" # 'bayer_bggr8' 'rgb24' ## the pixel format of incoming frames. E.g. "gray", "gray8a", "rgb24", or "rgba". Default "rgb24".
+pixelFormatOutput: "gray" # rgb0 # the pixel format to store frames. Default yuv420p".
 codec: "h264"
 quality: "21"
 
@@ -27,5 +27,8 @@ displayDownsample: 2
 # Other parameters
 ffmpegPath: [] #["/home/usr/Documents/ffmpeg/ffmpeg"]
 emulate: False
-frameWidth: 1152
-frameHeight: 1024
+frameWidth: 1616
+frameHeight: 1232
+
+# Trigger
+useTrigger: False
