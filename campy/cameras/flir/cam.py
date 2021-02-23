@@ -490,17 +490,24 @@ def CloseCamera(cam_params, system, cam_list, camera, grabdata):
                 SaveMetadata(cam_params,grabdata)
                 time.sleep(1)
                 # Close cameras
-                camera.EndAcquisition()
-                camera.DeInit()
+                if camera.IsStreaming():
+                    camera.EndAcquisition()
+                    #print('Acquisition Ended')
+                if camera.IsInitialized():
+                    camera.DeInit()
+                    #print('Camera DeInited')
                 del camera
+                #print('camera variable deleted')
                 # Clear camera list before releasing system
                 cam_list.Clear()
+                print('cam_list cleared')
                 # Release system instance
-                system.ReleaseInstance()
-                # camera.EndAcquisition()
+                system.ReleaseInstance() # Here we get the below mentioned exception ...
+                #print('system instance released')
                 break
             except Exception as e:
-                logging.error('Caught exception: {}'.format(e))
+                logging.error('Caught exception: {}'.format(e)) 
+                # always ends up here: ERROR:root:Caught exception: Spinnaker: Can't clear a camera because something still holds a reference to the camera [-1004]
                 break
         except KeyboardInterrupt:
             break
