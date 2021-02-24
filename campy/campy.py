@@ -82,7 +82,8 @@ def CreateCamParams(params, n_cam):
                         "quality": "21",
                         "chunkLengthInSec": 30,
                         "displayFrameRate": 10,
-                        "displayDownsample": 2, }
+                        "displayDownsample": 2,
+                        "useTrigger": True}
 
     cam_params = OptParams(params, cam_params, opt_params_dict)
     return cam_params
