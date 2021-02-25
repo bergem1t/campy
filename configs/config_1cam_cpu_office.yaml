@@ -1,0 +1,38 @@
+# Recording parameters
+videoFolder: "D:\\test"
+videoFilename: "0.mp4"
+frameRate: 60
+recTimeInSec: 2
+
+# Camera parameters
+cameraMake: "flir"
+numCams: 1
+cameraSelection: [0]
+cameraSettings: "D:/git_repos/campy/campy/cameras/flir/settings/BFS-U3-19S4_1616x1240_60fps_no_trigger_RGB_p6.pfs" # is this even used??
+cameraNames: ['Camera1']
+
+# Compression parameters
+ffmpegLogLevel: ["warning"]
+gpuID: -1
+pixelFormatInput: "bayer_rggb8" # # the pixel format of incoming frames. E.g. "gray", "gray8a", "rgb24", or "rgba". Default "rgb24".
+# Input format should match the format on the camera I suppose!? There should be a dict, if I'm not mistaken:
+# bayer_rggb8 = bayerrg8
+# gray = mono8 
+# rgb24 = ???
+pixelFormatOutput: "rgb0" # e.g. rgb0 gray yuv420p # the pixel format to store frames. (Default yuv420p").
+codec: "h264"
+quality: "21"
+
+# Display parameters
+chunkLengthInSec: 30
+displayFrameRate: 10
+displayDownsample: 2
+
+# Other parameters
+ffmpegPath: [] #["/home/usr/Documents/ffmpeg/ffmpeg"]
+emulate: False
+frameWidth: 1616
+frameHeight: 1232
+
+# Trigger
+useTrigger: False
