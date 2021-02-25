@@ -1,8 +1,8 @@
 # Recording parameters
-videoFolder: "../../data" # "/mocap_data/DATA"
+videoFolder: "/home/michael/data" # "/mocap_data/DATA"
 videoFilename: "0.mp4"
-frameRate: 60
-recTimeInSec: 5
+frameRate: 100
+recTimeInSec: 60
 
 # Camera parameters
 cameraMake: "flir"
@@ -26,7 +26,7 @@ displayFrameRate: 10
 displayDownsample: 2
 
 # Other parameters
-ffmpegPath: [] #["/home/usr/Documents/ffmpeg/ffmpeg"]
+ffmpegPath: "/home/michael/workspace/ffmpeg/ffmpeg" #[] ["/home/usr/Documents/ffmpeg/ffmpeg"]
 emulate: False
 frameWidth: 1616
 frameHeight: 1232
