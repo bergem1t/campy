@@ -1,5 +1,5 @@
 # Recording parameters
-videoFolder: "D:\\test"
+videoFolder: "C:\\Users\\Michael\\test"
 videoFilename: "0.mp4"
 frameRate: 60
 recTimeInSec: 2
@@ -8,7 +8,7 @@ recTimeInSec: 2
 cameraMake: "flir"
 numCams: 1
 cameraSelection: [0]
-cameraSettings: "D:/git_repos/campy/campy/cameras/flir/settings/BFS-U3-19S4_1616x1240_60fps_no_trigger_RGB_p6.pfs" # is this even used??
+cameraSettings: "D:/Users/Michael/gitrepos/campy/campy/cameras/flir/settings/BFS-U3-19S4_1616x1240_60fps_no_trigger_RGB_p6.pfs" # is this even used??
 cameraNames: ['Camera1']
 
 # Compression parameters
