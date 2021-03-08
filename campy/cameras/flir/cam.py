@@ -231,11 +231,11 @@ def StartGrabbing(camera):
 		return False
 
 def GrabFrame(camera, frameNumber):
-
+	 
 	return camera.GetNextImage()
 
 def GetImageArray(grabResult, cam_params):
-
+	# TODO add: if not grabResult.IsIncomplete():
 	return grabResult.GetNDArray()
 
 def GetTimeStamp(grabResult, camera):
@@ -266,13 +266,16 @@ def CloseCamera(cam_params, camera, grabdata):
 		try:
 			try:
 				# Close camera
-				camera.EndAcquisition()
-				camera.DeInit()
+				if camera.IsStreaming():
+					camera.EndAcquisition()
+				if camera.IsInitialized():
+					camera.DeInit()
 				del camera
 
 				# Save metadata
 				unicam.SaveMetadata(cam_params,grabdata)
 				time.sleep(0.5)
+				print('Closed')
 				break
 			except Exception as e:
 				logging.error('Caught exception: {}'.format(e))
@@ -283,3 +286,4 @@ def CloseCamera(cam_params, camera, grabdata):
 def CloseSystem(system, device_list):
 	device_list.Clear()
 	system.ReleaseInstance()
+	print('System closed')
