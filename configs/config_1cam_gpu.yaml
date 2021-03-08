@@ -8,11 +8,11 @@ recTimeInSec: 60
 cameraMake: "flir"
 numCams: 1
 cameraSelection: [0]
-cameraSettings: "./campy/cameras/flir/settings/BFS-U3-19S4_1616x1240_60fps_no_trigger_RGB_p6.pfs" # is this even used??
+# cameraSettings: "./campy/cameras/flir/settings/BFS-U3-19S4_1616x1240_60fps_no_trigger_RGB_p6.pfs" # is this even used??
 cameraNames: ['Camera1']
 
 # Compression parameters
-ffmpegLogLevel: ["warning"]
+ffmpegLogLevel: ["quiet"]
 gpuID: 0
 gpuMake: "nvidia"
 pixelFormatInput: "bayer_rggb8" # 'bayer_bggr8' 'rgb24'

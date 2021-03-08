@@ -1,7 +1,5 @@
 """
-
 """
-
 from imageio_ffmpeg import write_frames
 import os
 import time
@@ -9,11 +7,7 @@ import logging
 import sys
 
 def OpenWriter(cam_params):
-	n_cam = cam_params["n_cam"]
-
-	folder_name = cam_params["videoFolder"]
-	if len(cam_params["cameraNames"]) > 1:
-		folder_name = os.path.join(folder_name, cam_params["cameraName"])
+	folder_name = os.path.join(cam_params["videoFolder"], cam_params["cameraName"])
 	file_name = cam_params["videoFilename"]
 	full_file_name = os.path.join(folder_name, file_name)
 
@@ -114,13 +108,11 @@ def OpenWriter(cam_params):
 	return writer
 
 def WriteFrames(cam_params, writeQueue, stopQueue):
-	n_cam = cam_params["n_cam"]
-
 	# Start ffmpeg video writer 
 	writer = OpenWriter(cam_params)
 	message = ''
 
-	# Continue writing...
+	# Write until interrupted or stop message received
 	while(True):
 		try:
 			if writeQueue:
@@ -130,11 +122,11 @@ def WriteFrames(cam_params, writeQueue, stopQueue):
 				elif message=='STOP':
 					break
 			else:
-				time.sleep(0.0001)
+				time.sleep(0.001)
 		except KeyboardInterrupt:
-			stopQueue.append('STOP GRABBING')
+			stopQueue.append('STOP')
 
 	# Closing up...
-	print('Closing video writer for camera {}. Please wait...'.format(n_cam+1))
+	print('Closing video writer for {}. Please wait...'.format(cam_params["cameraName"]))
 	time.sleep(1)
 	writer.close()
