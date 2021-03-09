@@ -1,8 +1,7 @@
 import PySpin
 import numpy as np
 
-
-""" --------------- helpful wrapper functions for PySpin ---------------"""
+""" --------------- helpful wrapper functions for PySpin on camera level---------------"""
 
 # dicts that help understand which PySpin numbers relate to what
 _rw_modes = {
@@ -51,6 +50,7 @@ def get_val(name,nodemap):
         Value.
 
     """
+    #nodemap = camera.GetTLDeviceNodeMap()
     cur_ptr = get_node_ptr(name,nodemap)
 
     if hasattr(cur_ptr,"GetValue"):
@@ -80,6 +80,7 @@ def get_info(name,nodemap):
         contains info of node
 
     """
+    #nodemap = camera.GetTLDeviceNodeMap()
 
     info = {'name': name}
 
@@ -132,6 +133,8 @@ def get_node_ptr(name,nodemap,for_writing=False):
         It uses the global _attr_types dict to find the right pointer type.
 
     """
+    #nodemap = camera.GetTLDeviceNodeMap()
+    
     cur_node = nodemap.GetNode(name)
     if for_writing:
         if not PySpin.IsAvailable(cur_node) or not PySpin.IsWritable()(cur_node):
@@ -143,3 +146,6 @@ def get_node_ptr(name,nodemap,for_writing=False):
 
     interface_type = cur_node.GetPrincipalInterfaceType()
     return _attr_types[interface_type](cur_node)
+
+
+

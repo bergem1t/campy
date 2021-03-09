@@ -8,8 +8,9 @@ recTimeInSec: 10
 cameraMake: "flir"
 numCams: 1
 cameraSelection: [0]
-cameraSettings: "C:/Users/Michael/gitrepos/campy/campy/cameras/flir/settings/BFS-U3-19S4_1616x1240_60fps_no_trigger_RGB_p6.pfs" # is this even used??
+cameraSettings: "NOT-IMPLEMENTED-YET" #"C:/Users/Michael/gitrepos/campy/campy/cameras/flir/settings/BFS-U3-19S4_1616x1240_60fps_no_trigger_RGB_p6.pfs" 
 cameraNames: ['Camera1']
+cameraTrigger: [] # Line0
 
 # Compression parameters
 ffmpegLogLevel: ["warning"]
@@ -27,9 +28,6 @@ displayDownsample: 2
 
 # Other parameters
 ffmpegPath: [] #["/home/usr/Documents/ffmpeg/ffmpeg"]
-emulate: False
+#emulate: False
 frameWidth: 1616
 frameHeight: 1232
-
-# Trigger
-useTrigger: False
