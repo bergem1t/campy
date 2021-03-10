@@ -129,7 +129,7 @@ def GrabFrames(cam_params, device, writeQueue, dispQueue, stopQueue):
                 grabdata['frameNumber'].append(frameNumber) # first frame = 1
                 timeStamp = cam.GetTimeStamp(grabResult, camera)
                 grabdata['timeStamp'].append(timeStamp)
-                print('Frame {}'.format(frameNumber))
+                #print('Frame {}'.format(frameNumber))
     
                 # Display converted, downsampled image in the Window
                 if frameNumber % grabdata["frameRatio"] == 0:
