@@ -31,3 +31,7 @@ ffmpegPath: [] #["/home/usr/Documents/ffmpeg/ffmpeg"]
 #emulate: False
 frameWidth: 1616
 frameHeight: 1232
+
+exposureTime: 9000 # 10000 # if 0 (default) Exposure is automatic
+# ExposureMode: Timed # Default, alternative TriggerWidth <- not necessry since assumed if ExposureTime is set
+# ExposureAuto: Off # <- not necessry since assumed if ExposureTime is set

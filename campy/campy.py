@@ -82,6 +82,7 @@ def CreateCamParams(params, systems, n_cam):
                         "pixelFormatOutput": "rgb0", 
                         "frameWidth": 1152,
                         "frameHeight": 1024,
+                        "exposureTime": 0,
                         "ffmpegLogLevel": "quiet",
                         "gpuID": -1,
                         "gpuMake": "nvidia",
@@ -178,6 +179,12 @@ def ParseClargs(parser):
         dest="frameWidth",
         type=int, 
         help="Frame width in pixels.",
+    )
+    parser.add_argument(
+        "--exposureTime", 
+        dest="exposureTime",
+        type=int, 
+        help="Fix exposure time in microseconds.",
     )
     parser.add_argument(
         "--cameraMake", 

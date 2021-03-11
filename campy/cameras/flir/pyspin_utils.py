@@ -28,7 +28,7 @@ _attr_type_names = {
    PySpin.intfICommand: 'command',
 }
 
-def get_val(name,nodemap):
+def get_val(name,nodemap=[],camera=[]):
     """
     Get the value from one node in the nodemap
 
@@ -50,8 +50,12 @@ def get_val(name,nodemap):
         Value.
 
     """
-    #nodemap = camera.GetTLDeviceNodeMap()
-    cur_ptr = get_node_ptr(name,nodemap)
+    if not nodemap and not camera:
+        raise NameError('specify either nodemap or camera')
+    if not nodemap:
+        nodemap = camera.GetNodeMap()
+    
+    cur_ptr = get_node_ptr(name,nodemap=nodemap)
 
     if hasattr(cur_ptr,"GetValue"):
         return cur_ptr.GetValue()
@@ -63,7 +67,7 @@ def get_val(name,nodemap):
         raise ValueError("Value not forund in node attributes")
 
 
-def get_info(name,nodemap):
+def get_info(name,nodemap=[],camera=[]):
     """
     get info dict about a node in nodemap
 
@@ -80,25 +84,30 @@ def get_info(name,nodemap):
         contains info of node
 
     """
-    #nodemap = camera.GetTLDeviceNodeMap()
 
-    info = {'name': name}
-
+    if not nodemap and not camera:
+        raise NameError('specify either nodemap or camera')
+    if not nodemap:
+        nodemap = camera.GetNodeMap()
 
     try:
         cur_node = nodemap.GetNode(name)
         if not PySpin.IsAvailable(cur_node) or not PySpin.IsReadable(cur_node):
             raise ValueError("'%s' is not readable " % name)
+            
+        info = {'name': cur_node.GetDisplayName()}
 
         interface_type = cur_node.GetPrincipalInterfaceType()
         cur_ptr = _attr_types[interface_type](cur_node)
+        
+        
 
         if hasattr(cur_ptr, 'GetAccessMode'):
             access = cur_ptr.GetAccessMode()
             info['access'] = _rw_modes.get(access, access)
             # print(info['access'])
             if isinstance(info['access'], str) and 'read' in info['access']:
-                info['value'] = get_val(name, nodemap)
+                info['value'] = get_val(name, nodemap=nodemap)
 
         info['description'] = cur_ptr.GetDescription()
         info['type'] = _attr_type_names[interface_type]
@@ -108,7 +117,7 @@ def get_info(name,nodemap):
 
     return info
 
-def get_node_ptr(name,nodemap,for_writing=False):
+def get_node_ptr(name,nodemap=[],camera=[],for_writing=False):
     """
     This function returns the pointer to a node for reading or writing
 
@@ -133,7 +142,10 @@ def get_node_ptr(name,nodemap,for_writing=False):
         It uses the global _attr_types dict to find the right pointer type.
 
     """
-    #nodemap = camera.GetTLDeviceNodeMap()
+    if not nodemap and not camera:
+        raise NameError('specify either nodemap or camera')
+    if not nodemap:
+        nodemap = camera.GetNodeMap()
     
     cur_node = nodemap.GetNode(name)
     if for_writing:

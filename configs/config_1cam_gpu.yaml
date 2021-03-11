@@ -4,6 +4,11 @@ videoFilename: "0.mp4"
 frameRate: 100
 recTimeInSec: 60
 
+# Not implemented parameters yet:
+# ExposureTime: 9000 # 10000
+# ExposureMode: Timed # Default, alternative TriggerWidth
+# ExposureAuto: Off
+
 # Camera parameters
 cameraMake: "flir"
 numCams: 1

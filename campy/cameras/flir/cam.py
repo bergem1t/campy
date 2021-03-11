@@ -65,7 +65,20 @@ def ConfigureTrigger(cam_params, camera):
             camera.TriggerMode.SetValue(PySpin.TriggerMode_On)
             print('Trigger mode turned back on...')
         else:
-            print('No trigger selected, it stays disabled')
+            print('No trigger selected, it stays disabled and use framerate from config')
+            if camera.AcquisitionFrameRateEnable.GetAccessMode() != PySpin.RW:
+                print('Unable to enable framerate writing. Aborting...')
+                return False
+            
+            camera.AcquisitionFrameRateEnable.SetValue(True)
+            
+            if camera.AcquisitionFrameRate.GetAccessMode() != PySpin.RW:
+                print('Unable to write framerate. Aborting...')
+                return False
+            
+            camera.AcquisitionFrameRate.SetValue(cam_params['frameRate'])
+            print('Framerate set to {}'.format(cam_params['frameRate']))
+            
 
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
@@ -85,6 +98,7 @@ def ConfigureCustomImageSettings(cam_params, nodemap):
     :return: True if successful, False otherwise.
     :rtype: bool
     """
+    # TODO: Convert to QuickSpin
     print('\n*** CONFIGURING CUSTOM IMAGE SETTINGS *** \n')
     try:
         result = True
@@ -120,6 +134,37 @@ def ConfigureCustomImageSettings(cam_params, nodemap):
             print('Height set to %i...' % node_height.GetValue())
         else:
             print('Height not available...')
+            
+        # Set fix expsosure if defined in parameters
+        exp_time = cam_params['exposureTime']
+        if exp_time > 0:
+            node_exp_auto = PySpin.CEnumerationPtr(nodemap.GetNode('ExposureAuto'))
+            node_exp_mode = PySpin.CEnumerationPtr(nodemap.GetNode('ExposureMode'))
+            node_exp_time = PySpin.CFloatPtr(nodemap.GetNode('ExposureTime'))
+            
+            if PySpin.IsAvailable(node_exp_mode) and PySpin.IsWritable(node_exp_mode):
+                node_exp_mode_timed = PySpin.CEnumEntryPtr(node_exp_mode.GetEntryByName('Timed'))
+                if PySpin.IsAvailable(node_exp_mode_timed) and PySpin.IsReadable(node_exp_mode_timed):
+                    # Set integer as new value for enumeration node
+                    node_exp_mode.SetIntValue(node_exp_mode_timed.GetValue())
+                    print('Exposure mode set to %s...' % node_exp_mode.GetCurrentEntry().GetSymbolic())
+            
+                
+            if PySpin.IsAvailable(node_exp_auto) and PySpin.IsWritable(node_exp_auto):
+                node_exp_auto_off = PySpin.CEnumEntryPtr(node_exp_auto.GetEntryByName('Off'))
+                if PySpin.IsAvailable(node_exp_auto_off) and PySpin.IsReadable(node_exp_auto_off):
+                    # Set integer as new value for enumeration node
+                    node_exp_auto.SetIntValue(node_exp_auto_off.GetValue())
+                    print('Exposure auto set to %s...' % node_exp_auto.GetCurrentEntry().GetSymbolic())
+                
+            if PySpin.IsAvailable(node_exp_time) and PySpin.IsWritable(node_exp_time):
+                node_exp_time.SetValue(exp_time)
+                print('Exposure Time set to %.1f...' % node_exp_time.GetValue())
+            else:
+                print('Exposure Time not available...')
+        else:
+            print('Exposure setting was not touched')
+            
 
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
@@ -198,6 +243,7 @@ def OpenCamera(cam_params, camera):
 
 def LoadSettings(cam_params, camera):
     # Set acquisition mode to continuous
+    i = cam_params["cameraSelection"]
     node_acquisition_mode = PySpin.CEnumerationPtr(camera.GetNodeMap().GetNode('AcquisitionMode'))
     if not PySpin.IsAvailable(node_acquisition_mode) or not PySpin.IsWritable(node_acquisition_mode):
         print('Unable to set acquisition mode to continuous (node retrieval; camera %d). Aborting... \n' % i)
