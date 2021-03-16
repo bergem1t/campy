@@ -35,6 +35,17 @@ def ConfigureTrigger(cam_params, camera):
     elif CHOSEN_TRIGGER == TriggerType.HARDWARE:
         print('Hardware trigger chose...')
 
+    # Configure output trigger independent of trigger type TODO make via config
+    try:
+        camera.LineSelector.SetValue(PySpin.LineSelector_Line1)    
+        camera.LineMode.SetValue(PySpin.LineMode_Output)
+        camera.LineSource.SetValue(PySpin.LineSource_ExposureActive)
+        
+    except PySpin.SpinnakerException as ex:
+        print('Error in setting output trigger: %s - continue and ignore' % ex)
+        #return False
+
+    # Configure the input trigger
     try:
         result = True
         # Ensure trigger mode off
@@ -58,6 +69,15 @@ def ConfigureTrigger(cam_params, camera):
                 camera.TriggerSource.SetValue(PySpin.TriggerSource_Software)
             elif CHOSEN_TRIGGER == TriggerType.HARDWARE:
                 eval('camera.TriggerSource.SetValue(PySpin.TriggerSource_%s)' % cam_params['cameraTrigger'])
+                # also set trigger overlap on and trigger activation to rising edge
+                if camera.TriggerActivation.GetAccessMode() == PySpin.RW:
+                    camera.TriggerActivation.SetValue(PySpin.TriggerActivation_RisingEdge)
+                else:
+                    print('Unable to set TiggerSource. It remains at "%s"' %camera.TriggerActivation.ToString())
+                if camera.TriggerOverlap.GetAccessMode() == PySpin.RW:
+                    camera.TriggerOverlap.SetValue(PySpin.TriggerOverlap_ReadOut) 
+                else:
+                    print('Unable to set TiggerOverlap. It remains at "%s"' %camera.TriggerOverlap.ToString())
 
             # Turn trigger mode on
             # Once the appropriate trigger source has been set, turn trigger mode
